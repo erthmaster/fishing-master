@@ -15,6 +15,18 @@ public class Player : MonoBehaviour
     [Header("UI")] 
     [SerializeField] private Text wormsAmountText;
 
+    public IInteractable Target
+    {
+        get => target;
+        set
+        {
+            target?.StopInteraction();
+            target = value;
+        }
+    }
+
+    private IInteractable target;
+
     private bool atWormPit;
     private bool atFisher;
     private Rigidbody2D _rb;
@@ -32,10 +44,17 @@ public class Player : MonoBehaviour
             var inputY = Input.GetAxis("Vertical");
             _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Target != null)
             {
-                if (atWormPit)
-                    wormsAmount = maxWormsAmount;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Target.StartInteraction();
+                }
+
+                if (Input.GetKeyUp(KeyCode.E))
+                {
+                    Target.StopInteraction();
+                }
             }
         }
         else
@@ -46,28 +65,19 @@ public class Player : MonoBehaviour
         wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (col.GetComponent<WormPit>())
+        if (other.TryGetComponent(out IInteractable interactable))
         {
-            atWormPit = true;
-        }
-        else if (col.TryGetComponent(out Fisher fisher))
-        {
-            atFisher = true;
-            fisher.Show();
+            Target = interactable;
         }
     }
-    private void OnTriggerExit2D(Collider2D col)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (col.GetComponent<WormPit>())
+        if (other.TryGetComponent(out IInteractable interactable))
         {
-            atWormPit = false;
-        }
-        else if (col.TryGetComponent(out Fisher fisher))
-        {
-            atFisher = false;
-            fisher.Hide();
+            if (Target == interactable)
+                Target = null;
         }
     }
 }
