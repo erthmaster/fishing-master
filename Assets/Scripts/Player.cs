@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,22 +8,19 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxWormsAmount = 20;
 
     [Header("UI")] 
-    [SerializeField] private Text wormsAmountText;
+    [SerializeField] private TextMeshPro wormsAmountText;
 
     public IInteractable Target
     {
-        get => target;
+        get => _target;
         set
         {
-            target?.StopInteraction();
-            target = value;
+            _target?.StopInteraction();
+            _target = value;
         }
     }
 
-    private IInteractable target;
-
-    private bool atWormPit;
-    private bool atFisher;
+    private IInteractable _target;
     private Rigidbody2D _rb;
 
     private void Start()

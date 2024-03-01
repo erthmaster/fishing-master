@@ -9,12 +9,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public bool isPlaying;
 
-    [FormerlySerializedAs("_pausePanel")]
-    [FormerlySerializedAs("_startPanel")]
     [Header("UI")] 
     [SerializeField] private GameObject pausePanel;
 
-    private void Start()
+    private void Awake()
     {
         Instance ??= this;
     }

@@ -358,6 +358,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d355a7cd9eef19e4ca082dfcaa81299f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wormsAmount: 0
-  maxWormsAmount: 5
+  fishPerLevel: 010000000300000007000000
+  fishPerRodLevel: 01000000040000000600000009000000
+  sleepingChancePerLevel:
+  - 0.3
+  - 0.55
+  - 0.67
+  chanceToConsumeWorm: 0.75
+  maxSleepiness: 9
+  hardSleepinessThreshold: 7
+  sleepinessThreshold: 4
+  minimumDeepSleepTime: 15
+  wakeUpChance: 0.15
+  levelUpTimes: 0f000000190000001e000000
+  wormsAmount: 10
+  maxWormsAmount: 10
+  level: 1
+  fishingRodLevel: 0
+  umbrella: 0
+  sleepiness: 0
+  deepSleepingTime: 0
+  levelUpTime: 0
+  state: 0
   wormsText: {fileID: 1043219255108674827}
