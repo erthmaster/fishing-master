@@ -14,8 +14,13 @@ public class Fisher : MonoBehaviour
         wormsText.text = $"Worms: {wormsAmount}";
     }
 
-    public void ToggleInfo(bool isOn)
+    public void Show()
     {
-        wormsText.gameObject.SetActive(isOn);
+        wormsText.gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        wormsText.gameObject.SetActive(false);
     }
 }

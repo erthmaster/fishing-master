@@ -26,15 +26,23 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        var inputX = Input.GetAxis("Horizontal");
-        var inputY = Input.GetAxis("Vertical");
-        _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
-
-        if (Input.GetKeyDown(KeyCode.E))
+        if (GameManager.Instance.isPlaying)
         {
-            if(atWormPit)
-                wormsAmount = maxWormsAmount;
+            var inputX = Input.GetAxis("Horizontal");
+            var inputY = Input.GetAxis("Vertical");
+            _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (atWormPit)
+                    wormsAmount = maxWormsAmount;
+            }
         }
+        else
+        {
+            _rb.velocity = Vector2.zero;
+        }
+        
         wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
     }
 
@@ -44,10 +52,10 @@ public class Player : MonoBehaviour
         {
             atWormPit = true;
         }
-        else if (col.GetComponent<Fisher>())
+        else if (col.TryGetComponent(out Fisher fisher))
         {
             atFisher = true;
-            col.GetComponent<Fisher>().ToggleInfo(true);
+            fisher.Show();
         }
     }
     private void OnTriggerExit2D(Collider2D col)
@@ -56,10 +64,10 @@ public class Player : MonoBehaviour
         {
             atWormPit = false;
         }
-        else if (col.GetComponent<Fisher>())
+        else if (col.TryGetComponent(out Fisher fisher))
         {
             atFisher = false;
-            col.GetComponent<Fisher>().ToggleInfo(false);
+            fisher.Hide();
         }
     }
 }

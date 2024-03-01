@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Instance ??= this;
-        Time.timeScale = 0;
     }
 
     public void Update()
@@ -30,6 +29,5 @@ public class GameManager : MonoBehaviour
     {
         isPlaying = !isPlaying;
         pausePanel.SetActive(!isPlaying);
-        Time.timeScale = isPlaying ? 1 : 0;
     }
 }
