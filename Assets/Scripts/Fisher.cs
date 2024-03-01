@@ -25,9 +25,17 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public int minimumDeepSleepTime;
     public float wakeUpChance;
     public int[] levelUpTimes;
-    
+
+    public int WormsAmount
+    {
+        get => wormsAmount;
+        set
+        {
+            wormsAmount = value;
+            wormsText.text = $"Worms:\n{wormsAmount} / {maxWormsAmount}";
+        }
+    }
     [Space]
-    public int wormsAmount;
     public int maxWormsAmount;
 
     [Space]
@@ -47,15 +55,18 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
     [Header("UI")] 
     [SerializeField] private TextMeshPro wormsText;
+    [SerializeField] private int wormsAmount;
 
     private void Start()
     {
         Updater.Instance.Add(this);
+
+        WormsAmount = wormsAmount;
     }
 
     public void GameUpdate()
     {
-        wormsText.text = $"Worms:\n{wormsAmount} / {maxWormsAmount}";
+        
     }
 
     public void GameTick()
@@ -64,7 +75,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         switch (state)
         {
             case FisherState.Working:
-                if (wormsAmount > 0)
+                if (WormsAmount > 0)
                 {
                     Debug.Log($"Working: " + FPS);
                     TryConsumeWorm();
@@ -88,7 +99,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
             
             case FisherState.WaitingForWorms:
                 Debug.Log("Waiting for worms");
-                if (wormsAmount > 0)
+                if (WormsAmount > 0)
                 {
                     state = FisherState.Working;
                 }
@@ -158,7 +169,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     {
         if (Random.value < chanceToConsumeWorm)
         {
-            wormsAmount--;
+            WormsAmount--;
             Debug.Log("Consumed worm");
         }
     }
@@ -173,12 +184,17 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         wormsText.gameObject.SetActive(false);
     }
 
-    public void StartInteraction()
+    public void Interact()
+    {
+        WormsAmount += Player.Instance.GetWorms(maxWormsAmount - WormsAmount);
+    }
+
+    public void BecomeInteractTarget()
     {
         Show();
     }
 
-    public void StopInteraction()
+    public void StopBeingInteractTarget()
     {
         Hide();
     }

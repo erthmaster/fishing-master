@@ -1,31 +1,71 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+    
     [SerializeField] private float moveSpeed = 3;
-    [SerializeField] private int wormsAmount;
+
+    private int WormsAmount
+    {
+        get => wormsAmount;
+        set
+        {
+            wormsAmount = value;
+            wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
+        }
+    }
     [SerializeField] private int maxWormsAmount = 20;
 
     [Header("UI")] 
-    [SerializeField] private TextMeshPro wormsAmountText;
+    [SerializeField] private TextMeshProUGUI wormsAmountText;
+    [SerializeField] private int wormsAmount;
 
     public IInteractable Target
     {
         get => _target;
         set
         {
-            _target?.StopInteraction();
+            _target?.StopBeingInteractTarget();
             _target = value;
+            _target?.BecomeInteractTarget();
         }
     }
 
     private IInteractable _target;
     private Rigidbody2D _rb;
 
+    private void Awake()
+    {
+        Instance ??= this;
+
+        WormsAmount = wormsAmount;
+    }
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public int GetWorms(int required)
+    {
+        if (WormsAmount < required)
+        {
+            required = WormsAmount;
+        }
+
+        WormsAmount -= required;
+        return required;
+    }
+
+    public void CollectWorms(int amount)
+    {
+        WormsAmount += amount;
+
+        if (WormsAmount > maxWormsAmount)
+            WormsAmount = maxWormsAmount;
     }
 
     private void Update()
@@ -40,12 +80,7 @@ public class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    Target.StartInteraction();
-                }
-
-                if (Input.GetKeyUp(KeyCode.E))
-                {
-                    Target.StopInteraction();
+                    Target.Interact();
                 }
             }
         }
@@ -53,8 +88,6 @@ public class Player : MonoBehaviour
         {
             _rb.velocity = Vector2.zero;
         }
-        
-        // wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
     }
 
     private void OnTriggerEnter2D(Collider2D other)
