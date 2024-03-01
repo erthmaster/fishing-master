@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
             _rb.velocity = Vector2.zero;
         }
         
-        wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
+        // wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
     }
 
     private void OnTriggerEnter2D(Collider2D other)

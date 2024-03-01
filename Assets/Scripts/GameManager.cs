@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     {
         Instance ??= this;
     }
-
+    
     public void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
