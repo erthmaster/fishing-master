@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,10 +14,10 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxWormsAmount = 20;
 
     [Header("UI")] 
-    [SerializeField] private Text wormsAmountText;
+    [SerializeField] private TMP_Text wormsAmountText;
 
-    private bool atWormPit;
-    private bool atFisher;
+    private bool _atWormPit;
+    private Fisher _currentFisher;
     private Rigidbody2D _rb;
 
     private void Start()
@@ -32,21 +33,25 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if(atWormPit)
+            if(_atWormPit)
                 wormsAmount = maxWormsAmount;
+            if (_currentFisher && (wormsAmount - (_currentFisher.maxWormsAmount - _currentFisher.wormsAmount)) !<= 0)
+                _currentFisher.wormsAmount = wormsAmount - (_currentFisher.maxWormsAmount - _currentFisher.wormsAmount); // Non working
         }
-        wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
+        wormsAmountText.text =
+            $"Worms: {wormsAmount} /" +
+            $" {maxWormsAmount}";
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.GetComponent<WormPit>())
         {
-            atWormPit = true;
+            _atWormPit = true;
         }
         else if (col.GetComponent<Fisher>())
         {
-            atFisher = true;
+            _currentFisher = col.GetComponent<Fisher>();
             col.GetComponent<Fisher>().ToggleInfo(true);
         }
     }
@@ -54,11 +59,11 @@ public class Player : MonoBehaviour
     {
         if (col.GetComponent<WormPit>())
         {
-            atWormPit = false;
+            _atWormPit = false;
         }
         else if (col.GetComponent<Fisher>())
         {
-            atFisher = false;
+            _currentFisher = null;
             col.GetComponent<Fisher>().ToggleInfo(false);
         }
     }

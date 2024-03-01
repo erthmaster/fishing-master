@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Fisher : MonoBehaviour
 {
     public int wormsAmount;
+    public int maxWormsAmount;
 
     [Header("UI")] 
-    private TextMesh wormsText;
+    [SerializeField] private TextMeshPro wormsText;
 
     void Update()
     {
-        wormsText.text = $"Worms: {wormsAmount}";
+        wormsText.text = $"Worms:\n{wormsAmount} / {maxWormsAmount}";
     }
 
     public void ToggleInfo(bool isOn)
