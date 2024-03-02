@@ -84,6 +84,9 @@ public class ShopPanel : MonoBehaviour
 
 	public void SetSelectedItem(FisherCard selectedItem)
 	{
+		if (selected == selectedItem)
+			return;
+		
 		if (selected != null)
 			selected.Unselect();
 
@@ -93,12 +96,11 @@ public class ShopPanel : MonoBehaviour
 
 	public void BuyNew()
 	{
-
 		CreateNewFisher();
 
 		if (_cards.Count == Fishers.Instance.FishersList.Count)
 		{
-			buyNewFisherButton.interactable = false;
+			buyNewFisherButton.Interactable = false;
 		}
 	}
 
