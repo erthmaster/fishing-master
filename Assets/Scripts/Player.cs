@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
 
     private IInteractable _target;
     private Rigidbody2D _rb;
+    private Animator _animator;
+    private static readonly int IsRunning = Animator.StringToHash("isRunning");
 
     private void Awake()
     {
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
     }
 
@@ -75,6 +78,9 @@ public class Player : MonoBehaviour
             var inputX = Input.GetAxis("Horizontal");
             var inputY = Input.GetAxis("Vertical");
             _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
+            _animator.SetBool(IsRunning, inputX != 0 || inputY != 0);
+            if(inputX != 0)
+                transform.localScale = new Vector2(inputX, 1);
 
             if (Target != null)
             {
