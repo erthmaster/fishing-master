@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0106f1c761585af48885de1dd6a61aa0
+guid: b13483c7d89fe5c4f98127a5e95741b5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,7 +44,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -105,43 +105,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: normal_rounded
+      name: clouds_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 9
+        y: 0
         width: 32
-        height: 13
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 3, y: 5, z: 3, w: 3}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 59d93741cf134b142b60e686b8b3992a
-      internalID: -60627212
+      spriteID: d3e825d1cbda58546b8983eefd467e66
+      internalID: -1245511756
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: normal_square
+      name: clouds_1
       rect:
         serializedVersion: 2
-        x: 33
-        y: 9
-        width: 31
-        height: 13
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 2, z: 0, w: 0}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: daa5b914d72e3e740b79c07c230d0db5
-      internalID: 339082806
+      spriteID: 3726886c18c6da64b93f17d7ffd19d16
+      internalID: -1172627714
       vertices: []
       indices: 
       edges: []
@@ -157,8 +157,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      normal_rounded: -60627212
-      normal_square: 339082806
+      clouds_0: -1245511756
+      clouds_1: -1172627714
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

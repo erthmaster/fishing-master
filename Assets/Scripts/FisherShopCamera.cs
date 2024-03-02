@@ -13,6 +13,7 @@ public class FisherShopCamera : MonoBehaviour
 		virtualCamera2 = Instantiate(virtualCamera1, virtualCamera1.transform.parent);
 		virtualCamera2.gameObject.SetActive(false);
 		active = virtualCamera1;
+		virtualCamera1.gameObject.SetActive(true);
 		
 		gameObject.SetActive(false);
 	}

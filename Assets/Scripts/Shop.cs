@@ -3,6 +3,7 @@
 public class Shop : MonoBehaviour, IInteractable
 {
 	public ShopPanel shopUI;
+	public InfoPanel infoPanel;
 	
 	public void Interact()
 	{
@@ -11,11 +12,11 @@ public class Shop : MonoBehaviour, IInteractable
 
 	public void BecomeInteractTarget()
 	{
-		
+		infoPanel.BecomeInteractTarget();
 	}
 
 	public void StopBeingInteractTarget()
 	{
-		
+		infoPanel.StopBeingInteractTarget();
 	}
 }
