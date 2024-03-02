@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
+
+    public bool blockMovement;
     
     [SerializeField] private float moveSpeed = 3;
 
@@ -72,9 +74,16 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance.isPlaying)
         {
-            var inputX = Input.GetAxis("Horizontal");
-            var inputY = Input.GetAxis("Vertical");
-            _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
+            if (blockMovement == false)
+            {
+                var inputX = Input.GetAxis("Horizontal");
+                var inputY = Input.GetAxis("Vertical");
+                _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
+            }
+            else
+            {
+                _rb.velocity = Vector2.zero;
+            }
 
             if (Target != null)
             {

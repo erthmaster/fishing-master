@@ -25,6 +25,9 @@ public class Updater : MonoBehaviour
 		
 		foreach (IUpdatable updatable in _updatables)
 		{
+			if (updatable is MonoBehaviour { gameObject: { activeInHierarchy: false } })
+				continue;
+			
 			updatable.GameUpdate();
 			if (_time >= tickTime)
 				updatable.GameTick();

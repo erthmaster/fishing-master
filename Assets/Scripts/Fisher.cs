@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public enum FisherState
@@ -16,6 +17,8 @@ public enum FisherState
 
 public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 {
+    public UnityEvent LevelChanged;
+    
     public int[] fishPerLevel;
     public int[] fishPerRodLevel;
     public float[] sleepingChancePerLevel;
@@ -60,8 +63,10 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     private void Start()
     {
         Updater.Instance.Add(this);
+        Fishers.Instance.Add(this);
 
         WormsAmount = wormsAmount;
+        gameObject.SetActive(false);
     }
 
     public void GameUpdate()
@@ -151,6 +156,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         {
             level++;
             levelUpTime = 0;
+            LevelChanged.Invoke();
         }
     }
 
