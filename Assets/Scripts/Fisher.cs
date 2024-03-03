@@ -66,6 +66,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public TextMeshProUGUI fisherName;
     public TextMeshProUGUI status;
     public TextMeshProUGUI interactText;
+    public SpriteRenderer renderer;
 
     public int FPS => fishPerLevel[level] + fishPerRodLevel[fishingRodLevel];
     public float ChanceToSleep => sleepingChancePerLevel[level];

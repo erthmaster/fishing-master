@@ -20,6 +20,7 @@ public class FisherCard : MonoBehaviour
 	public TextMeshProUGUI wormsTank;
 	public TextMeshProUGUI rod;
 	public Image panel;
+	public FisherImageGrabber fisherImageGrabber;
 
 	private StatedAnimationPlayer<bool> _animation;
 
@@ -48,6 +49,8 @@ public class FisherCard : MonoBehaviour
 	{
 		fisher = target;
 		id = fisherId;
+
+		fisherImageGrabber.fisher = target;
 		
 		target.LevelChanged.AddListener(UpdateView);
 		target.gameObject.SetActive(true);

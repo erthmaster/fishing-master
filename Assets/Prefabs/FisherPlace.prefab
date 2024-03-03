@@ -1516,6 +1516,7 @@ MonoBehaviour:
   fisherName: {fileID: 3265447446541360983}
   status: {fileID: 2866822853569047451}
   interactText: {fileID: 6136050993331461204}
+  renderer: {fileID: 142556157576608660}
   wormsAmount: 10
 --- !u!1001 &2902007146325778843
 PrefabInstance:

@@ -108,6 +108,7 @@ MonoBehaviour:
       m_Calls: []
   normal: {fileID: -60627212, guid: 0106f1c761585af48885de1dd6a61aa0, type: 3}
   pressed: {fileID: 1079829465, guid: 04f7e3f8efbac994bbc8f843aaa157ca, type: 3}
+  target: {fileID: 6188180777461150307}
   _interactable: 1
 --- !u!1 &6188180777461150306
 GameObject:

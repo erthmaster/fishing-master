@@ -12,6 +12,8 @@ public class Button : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, 
 	public Sprite normal;
 	public Sprite pressed;
 
+	public RectTransform target;
+
 	public bool Interactable
 	{
 		get => _interactable;
@@ -33,6 +35,7 @@ public class Button : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, 
 	[SerializeField] private bool _interactable = true;
 	private CanvasGroup _canvasGroup;
 	private Image _image;
+	private Vector2 _position;
 
 	private void Awake()
 	{
@@ -40,6 +43,7 @@ public class Button : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, 
 		_canvasGroup = GetComponent<CanvasGroup>();
 
 		Interactable = _interactable;
+		_position = target.anchoredPosition;
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
@@ -48,6 +52,7 @@ public class Button : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, 
 			return;
 
 		_image.sprite = pressed;
+		target.anchoredPosition = _position - new Vector2(0, 10 / _image.pixelsPerUnitMultiplier);
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
@@ -61,5 +66,6 @@ public class Button : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, 
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		_image.sprite = normal;
+		target.anchoredPosition = _position;
 	}
 }
