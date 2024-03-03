@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
                 _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
                 _animator.SetBool(IsRunning, inputX != 0 || inputY != 0);
                 if (inputX != 0)
-                    transform.localScale = new Vector2(inputX, 1);
+                    transform.localScale = new Vector2(inputX * 1.3f, 1.3f);
             }
             else
             {
