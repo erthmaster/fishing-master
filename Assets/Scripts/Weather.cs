@@ -18,12 +18,16 @@ public class Weather : MonoBehaviour, IUpdatable
     
     public WeatherState state { get; private set; }
 
-    public int MinTicks = 20;
-    public int MaxTicks = 40;
+    public int MinTicks = 2;
+    public int MaxTicks = 4;
 
     [SerializeField] private GameObject rainyParticles;
     [SerializeField] private GameObject stormyParticles;
     [SerializeField] private GameObject sunnyParticles;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip stormyClip;
+    [SerializeField] private AudioClip sunnyClip;
+    [SerializeField] private AudioClip rainyClip;
     
     [SerializeField] private float ticksToWeatherChange;
 
@@ -34,7 +38,12 @@ public class Weather : MonoBehaviour, IUpdatable
 
     private void Start()
     {
-        Updater.Instance.Add(this);       
+        Updater.Instance.Add(this);
+        state = WeatherState.Sunny;
+        sunnyParticles.SetActive(state == WeatherState.Sunny);
+        ticksToWeatherChange = Random.Range(MinTicks, MaxTicks);
+        audioSource.clip = sunnyClip;
+        audioSource.Play();
     }
 
     public void GameUpdate()
@@ -59,5 +68,19 @@ public class Weather : MonoBehaviour, IUpdatable
         sunnyParticles.SetActive(state == WeatherState.Sunny);
         rainyParticles.SetActive(state == WeatherState.Rainy);
         stormyParticles.SetActive(state == WeatherState.Stormy);
+        
+        if (state == WeatherState.Stormy)
+        {
+            audioSource.clip = stormyClip;
+        }
+        else if (state == WeatherState.Rainy)
+        {
+            audioSource.clip = rainyClip;
+        }
+        else if(state == WeatherState.Sunny)
+        {
+            audioSource.clip = sunnyClip;
+        }
+        audioSource.Play();
     }
 }
