@@ -125,7 +125,7 @@ public class ShopPanel : MonoBehaviour
 
 	public void BuyNew()
 	{
-		CreateNewFisher();
+		CreateNewFisher().Select();
 
 		if (_cards.Count == Fishers.Instance.FishersList.Length)
 		{
@@ -137,12 +137,12 @@ public class ShopPanel : MonoBehaviour
 		}
 	}
 
-	private void CreateNewFisher()
+	private FisherCard CreateNewFisher()
 	{
 		FisherCard newFisher = Instantiate(prefab, container);
 		newFisher.Bind(Fishers.Instance.FishersList[_cards.Count], _cards.Count, this);
 		newFisher.gameObject.SetActive(true);
 		_cards.Add(newFisher);
-		newFisher.Select();
+		return newFisher;
 	}
 }
