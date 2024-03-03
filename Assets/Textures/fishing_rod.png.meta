@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 467d9126ecd480e49824175d3498dfb6
+guid: 96c856e55c33f494b8b3019e24b1f832
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -78,18 +78,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -117,43 +105,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: walk_0
+      name: fishing_rod_0
       rect:
         serializedVersion: 2
-        x: 8
+        x: 0
         y: 0
-        width: 17
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 402be05939537094db85f78ce47c6bf0
-      internalID: -189715264
+      spriteID: 49f910428d745464bab46785f301aa21
+      internalID: -2059494172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: walk_1
+      name: fishing_rod_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 2
-        width: 17
-        height: 19
-      alignment: 9
-      pivot: {x: 0.49858698, y: 0.0028600441}
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5716f26fbd2167841883c2fa522951ed
-      internalID: -1285805214
+      spriteID: fb6f99103408fec45b885f8fe4d0bc98
+      internalID: -579046513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishing_rod_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f483e5352d0b4d04f806f688714835c3
+      internalID: 325436157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishing_rod_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c21761bce42be645a61ded229861dbb
+      internalID: -2109733638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishing_rod_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1d9b8f701514074e998d8d336f9b006
+      internalID: -565818985
       vertices: []
       indices: 
       edges: []
@@ -169,8 +220,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      walk_0: -189715264
-      walk_1: -1285805214
+      fishing_rod_0: -2059494172
+      fishing_rod_1: -579046513
+      fishing_rod_2: 325436157
+      fishing_rod_3: -2109733638
+      fishing_rod_4: -565818985
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

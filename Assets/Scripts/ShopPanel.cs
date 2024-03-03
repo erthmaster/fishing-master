@@ -44,9 +44,13 @@ public class ShopPanel : MonoBehaviour
 			{
 				case Visibility.Visible:
 					canvasGroup.blocksRaycasts = true;
-					
+					canvasGroup.interactable = true;
+
 					if (selected != null)
+					{
 						shopCamera.Show(selected.fisher);
+						selected.fisher.BecomeInteractTarget();
+					}
 
 					if (Player.Instance != null)
 						Player.Instance.blockMovement = true;
@@ -54,8 +58,13 @@ public class ShopPanel : MonoBehaviour
 				
 				case Visibility.Hidden:
 					canvasGroup.blocksRaycasts = false;
+					canvasGroup.interactable = false;
 					
 					shopCamera.Deactivate();
+					if (selected != null)
+					{
+						selected.fisher.StopBeingInteractTarget();
+					}
 					
 					if (Player.Instance != null)
 						Player.Instance.blockMovement = false;
@@ -86,11 +95,15 @@ public class ShopPanel : MonoBehaviour
 	{
 		if (selected == selectedItem)
 			return;
-		
+
 		if (selected != null)
+		{
 			selected.Unselect();
+			selected.fisher.StopBeingInteractTarget();
+		}
 
 		selected = selectedItem;
+		selected.fisher.BecomeInteractTarget();
 		shopCamera.Show(selected.fisher);
 	}
 

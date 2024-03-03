@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private static readonly int IsRunning = Animator.StringToHash("isRunning");
     public static Player Instance;
 
     public bool blockMovement;
@@ -25,21 +28,12 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI wormsAmountText;
     [SerializeField] private int wormsAmount;
 
-    public IInteractable Target
-    {
-        get => _target;
-        set
-        {
-            _target?.StopBeingInteractTarget();
-            _target = value;
-            _target?.BecomeInteractTarget();
-        }
-    }
+    public IInteractable Target => _targets.LastOrDefault();
 
     private IInteractable _target;
     private Rigidbody2D _rb;
     private Animator _animator;
-    private static readonly int IsRunning = Animator.StringToHash("isRunning");
+    private readonly List<IInteractable> _targets = new();
 
     private void Awake()
     {
@@ -82,17 +76,19 @@ public class Player : MonoBehaviour
                 var inputX = Input.GetAxis("Horizontal");
                 var inputY = Input.GetAxis("Vertical");
                 _rb.velocity = new Vector2(inputX * moveSpeed, inputY * moveSpeed);
-                            _animator.SetBool(IsRunning, inputX != 0 || inputY != 0);
-                if(inputX != 0)
+                _animator.SetBool(IsRunning, inputX != 0 || inputY != 0);
+                if (inputX != 0)
                     transform.localScale = new Vector2(inputX, 1);
             }
             else
             {
                 _rb.velocity = Vector2.zero;
+                _animator.SetBool(IsRunning, false);
             }
 
             if (Target != null)
             {
+                Target.BecomeInteractTarget();
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     Target.Interact();
@@ -109,15 +105,26 @@ public class Player : MonoBehaviour
     {
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            Target = interactable;
+            AddTarget(interactable);
         }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            if (Target == interactable)
-                Target = null;
+            RemoveTarget(interactable);
         }
+    }
+
+    private void AddTarget(IInteractable interactable)
+    {
+        Target?.StopBeingInteractTarget();
+        _targets.Add(interactable);
+    }
+
+    private void RemoveTarget(IInteractable interactable)
+    {
+        interactable.StopBeingInteractTarget();
+        _targets.Remove(interactable);
     }
 }

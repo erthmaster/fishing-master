@@ -12,7 +12,7 @@ public class Shop : MonoBehaviour, IInteractable
 
 	public void BecomeInteractTarget()
 	{
-		infoPanel.BecomeInteractTarget();
+		infoPanel.BecomeInteractTarget(this);
 	}
 
 	public void StopBeingInteractTarget()
