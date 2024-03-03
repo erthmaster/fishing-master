@@ -100,6 +100,9 @@ public class Weather : MonoBehaviour, IUpdatable
         {
             _lighting.Play();
             thunderAudioSource.Play();
+            var fisher = Fishers.Instance.FishersList[Random.Range(0, Fishers.Instance.FishersList.Length)];
+            fisher.hasUmbrella = false;
+            fisher.UpdateView();
         }
     }
 
