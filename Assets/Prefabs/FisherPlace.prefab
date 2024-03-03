@@ -1306,14 +1306,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d355a7cd9eef19e4ca082dfcaa81299f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelChanged:
+  ViewUpdated:
     m_PersistentCalls:
       m_Calls: []
   animations:
   - {fileID: 9100000, guid: e1b8e967d311dcc429bfaeb3468b4104, type: 2}
   - {fileID: 9100000, guid: 7da1022a19921c3469ff018d97cefaf8, type: 2}
   fishPerLevel: 010000000300000007000000
-  fishPerRodLevel: 01000000040000000600000009000000
+  rodsUpgrades:
+  - price: 0
+    fps: 1
+  - price: 20
+    fps: 2
+  - price: 30
+    fps: 4
+  - price: 50
+    fps: 8
+  wormsTankUpgrades:
+  - price: 0
+    amount: 10
+  - price: 20
+    amount: 20
+  - price: 80
+    amount: 40
+  umbrellaPrice: 35
   sleepingChancePerLevel:
   - 0.3
   - 0.55
@@ -1324,8 +1340,8 @@ MonoBehaviour:
   minimumDeepSleepTime: 15
   wakeUpChance: 0.15
   levelUpTimes: 0f000000190000001e000000
-  maxWormsAmount: 10
   level: 1
+  wormsTankLevel: 0
   fishingRodLevel: 0
   hasUmbrella: 0
   sleepiness: 0

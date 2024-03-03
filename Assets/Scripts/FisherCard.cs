@@ -21,6 +21,11 @@ public class FisherCard : MonoBehaviour
 	public TextMeshProUGUI rod;
 	public Image panel;
 	public FisherImageGrabber fisherImageGrabber;
+	
+	[Space]
+	public PriceButton wormsTankPriceButton;
+	public PriceButton fishingRodPriceButton;
+	public PriceButton umbrellaPriceButton;
 
 	private StatedAnimationPlayer<bool> _animation;
 
@@ -52,7 +57,7 @@ public class FisherCard : MonoBehaviour
 
 		fisherImageGrabber.fisher = target;
 		
-		target.LevelChanged.AddListener(UpdateView);
+		target.ViewUpdated.AddListener(UpdateView);
 		target.gameObject.SetActive(true);
 		UpdateView();
 
@@ -68,8 +73,56 @@ public class FisherCard : MonoBehaviour
 	public void UpdateView()
 	{
 		fisherName.text = $"Fisher #{id + 1} (Level: {fisher.level})";
-		wormsTank.text = $"Worms tank: {fisher.maxWormsAmount}";
+		wormsTank.text = $"Worms tank: {fisher.MaxWormsAmount}";
 		rod.text = $"Fishing rod: {fisher.FPS} FPS";
+
+		if (fisher.wormsTankLevel == fisher.wormsTankUpgrades.Length - 1)
+		{
+			wormsTankPriceButton.SoldOut();
+		}
+		else
+		{
+			wormsTankPriceButton.price = fisher.wormsTankUpgrades[fisher.wormsTankLevel + 1].price;
+			wormsTankPriceButton.UpdatePrice();
+		}
+		
+		if (fisher.fishingRodLevel == fisher.rodsUpgrades.Length - 1)
+		{
+			fishingRodPriceButton.SoldOut();
+		}
+		else
+		{
+			fishingRodPriceButton.price = fisher.rodsUpgrades[fisher.fishingRodLevel + 1].price;
+			fishingRodPriceButton.UpdatePrice();
+		}
+
+		if (fisher.hasUmbrella)
+		{
+			umbrellaPriceButton.SoldOut();
+		}
+		else
+		{
+			umbrellaPriceButton.price = fisher.umbrellaPrice;
+			umbrellaPriceButton.UpdatePrice();
+		}
+	}
+
+	public void BuyFishingRod()
+	{
+		fisher.fishingRodLevel++;
+		fisher.UpdateView();
+	}
+
+	public void BuyWormsTank()
+	{
+		fisher.wormsTankLevel++;
+		fisher.UpdateView();
+	}
+
+	public void BuyUmbrella()
+	{
+		fisher.hasUmbrella = true;
+		fisher.UpdateView();
 	}
 
 	public void Unselect()

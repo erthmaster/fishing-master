@@ -4,6 +4,7 @@ using AurumGames.Animation.Tracks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PriceButton : MonoBehaviour
 {
@@ -12,8 +13,15 @@ public class PriceButton : MonoBehaviour
 	public int price;
 
 	public TextMeshProUGUI priceText;
+	public Image button;
+	public Image canBuyIcon;
+	public Color normal;
+	public Color canBuy;
+	public Color soldColor;
+	public string soldText;
 	
 	private AnimationPlayer _animation;
+	private bool _soldOut;
 	
 	private void Awake()
 	{
@@ -45,13 +53,62 @@ public class PriceButton : MonoBehaviour
 				new KeyFrame<Color>(500, priceText.color, Easing.QuadOut),
 			})
 		});
+	}
+
+	private void Start()
+	{
+		Currency.Instance.MoneyValueChanged.AddListener(() =>
+		{
+			if (_soldOut)
+			{
+				SoldOut();
+			}
+			else
+			{
+				UpdatePrice();
+			}
+		});
+		
 		
 		UpdatePrice();
 	}
 
 	public void UpdatePrice()
 	{
-		priceText.text = $"{price}$";
+		priceText.text = $"{price}<sprite=0>";
+
+		UpdateState();
+	}
+
+	public void UpdateState()
+	{
+		_soldOut = false;
+		if (button)
+		{
+			button.raycastTarget = true;
+			var can = Currency.Instance.CanBuy(price);
+			button.color = can ? canBuy : normal;
+			if (canBuyIcon)
+			{
+				canBuyIcon.gameObject.SetActive(can);
+			}
+		}
+	}
+
+	public void SoldOut()
+	{
+		_soldOut = true;
+		if (button)
+		{
+			button.raycastTarget = false;
+			button.color = soldColor;
+			if (canBuyIcon)
+			{
+				canBuyIcon.gameObject.SetActive(false);
+			}
+		}
+
+		priceText.text = soldText;
 	}
 
 	public void Buy()

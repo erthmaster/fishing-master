@@ -3,10 +3,13 @@ using AurumGames.Animation;
 using AurumGames.Animation.Tracks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Currency : MonoBehaviour
 {
 	public static Currency Instance;
+
+	public UnityEvent MoneyValueChanged;
 
 	public TextMeshProUGUI text;
 
@@ -16,6 +19,7 @@ public class Currency : MonoBehaviour
 		set
 		{
 			_money = value;
+			MoneyValueChanged.Invoke();
 
 			if (_animation != null)
 			{
