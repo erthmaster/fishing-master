@@ -10,6 +10,7 @@ public class WormsBucket : MonoBehaviour, IInteractable
 	public SpriteRenderer renderer;
 	public TextMeshProUGUI wormsAmount;
 	public Color NormalTextColor;
+	public NoWormsPanel noWorms;
 
 	public InfoPanel infoPanel;
 
@@ -19,6 +20,15 @@ public class WormsBucket : MonoBehaviour, IInteractable
 		var hasWorms = fisher.WormsAmount > 0;
 		wormsAmount.color = hasWorms ? NormalTextColor : Color.red;
 		renderer.sprite = hasWorms ? withWorms : withoutWorms;
+
+		if (hasWorms)
+		{
+			noWorms.Hide();
+		}
+		else
+		{
+			noWorms.Show();
+		}
 	}
 	
 	public void Interact()

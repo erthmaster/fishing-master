@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
     private static readonly int IsRunning = Animator.StringToHash("isRunning");
     public static Player Instance;
+
+    public UnityEvent FishAmountChanged;
 
     public bool blockMovement;
     
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour
         set
         {
             fishAmount = value;
+            FishAmountChanged.Invoke();
 
             if (fishAmountText)
             {

@@ -82,6 +82,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public TextMeshProUGUI fisherName;
     public TextMeshProUGUI status;
     public TextMeshProUGUI interactText;
+    public CanvasGroup interactKeyMessage;
     public SpriteRenderer renderer;
     public bool ready;
 
@@ -202,7 +203,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 SetState(FisherState.Hiding);
                 break;
             
-            case WeatherState.Rainy:
+            case WeatherState.Rainy when hasUmbrella == false:
                 SetState(FisherState.Hiding);
                 break;
         }
@@ -287,8 +288,18 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
         umbrella.SetActive(hasUmbrella);
         fisher.SetActive(state is not FisherState.Hiding);
+        interactKeyMessage.alpha = state is not FisherState.Hiding and not FisherState.DeepSleeping ? 1 : 0;
         wormsBucket.UpdateView();
-
+        
+        if (state == FisherState.Sleeping)
+        {
+            interactText.text = "Wake up";
+        }
+        else
+        {
+            interactText.text = "Give worms";
+        }
+        
         switch (state)
         {
             case FisherState.Working:

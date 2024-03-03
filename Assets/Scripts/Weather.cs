@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AurumGames.Animation;
+using AurumGames.Animation.Tracks;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum WeatherState
@@ -20,6 +23,12 @@ public class Weather : MonoBehaviour, IUpdatable
 
     public int MinTicks = 2;
     public int MaxTicks = 4;
+    public float stormChance;
+    public float ligtingChance;
+    public Image stormLighting;
+    public Color sunnyColor;
+    public Color rainyColor;
+    public Color stormyColor;
 
     [SerializeField] private GameObject rainyParticles;
     [SerializeField] private GameObject stormyParticles;
@@ -31,9 +40,35 @@ public class Weather : MonoBehaviour, IUpdatable
     
     [SerializeField] private float ticksToWeatherChange;
 
+    private AnimationPlayer _lighting;
+    private StatedFluentAnimationPlayer<Color> _cameraColor;
+
     private void Awake()
     {
         Instance ??= this;
+
+        _lighting = new AnimationPlayer(this, new ITrack[]
+        {
+            new ImageAlphaTrack(stormLighting, new[]
+            {
+                new KeyFrame<float>(0, 0, Easing.QuadOut),
+                new KeyFrame<float>(150, 0.7f, Easing.QuadOut),
+                new KeyFrame<float>(180, 0.2f, Easing.QuadOut),
+                new KeyFrame<float>(230, 0.5f, Easing.QuadOut),
+                new KeyFrame<float>(260, 0.13f, Easing.QuadOut),
+                new KeyFrame<float>(290, 0.2f, Easing.QuadOut),
+                new KeyFrame<float>(360, 0, Easing.QuadOut),
+            })
+        });
+
+        var track = new FluentCameraBackgroundColorTrack(Camera.main, new Transition(1500));
+
+        _cameraColor = new StatedFluentAnimationPlayer<Color>(this, track);
+        _cameraColor.StateChanged += (previous, current, options) =>
+        {
+            track.Set(current, options);
+        };
+        _cameraColor.SetStateInstant(sunnyColor);
     }
 
     private void Start()
@@ -60,11 +95,31 @@ public class Weather : MonoBehaviour, IUpdatable
             ticksToWeatherChange = Random.Range(MinTicks, MaxTicks);
             ChangeWeather();
         }
+
+        if (state == WeatherState.Stormy && Random.value < ligtingChance)
+        {
+            _lighting.Play();
+        }
     }
 
     private void ChangeWeather()
     {
-        state = (WeatherState)Random.Range(0, 3);
+        if (state == WeatherState.Sunny)
+        {
+            if (Random.value < stormChance)
+            {
+                state = WeatherState.Stormy;
+            }
+            else
+            {
+                state = WeatherState.Rainy;
+            }
+        }
+        else
+        {
+            state = WeatherState.Sunny;
+        }
+        
         sunnyParticles.SetActive(state == WeatherState.Sunny);
         rainyParticles.SetActive(state == WeatherState.Rainy);
         stormyParticles.SetActive(state == WeatherState.Stormy);
@@ -72,14 +127,17 @@ public class Weather : MonoBehaviour, IUpdatable
         if (state == WeatherState.Stormy)
         {
             audioSource.clip = stormyClip;
+            _cameraColor.SetState(stormyColor);
         }
         else if (state == WeatherState.Rainy)
         {
             audioSource.clip = rainyClip;
+            _cameraColor.SetState(rainyColor);
         }
         else if(state == WeatherState.Sunny)
         {
             audioSource.clip = sunnyClip;
+            _cameraColor.SetState(sunnyColor);
         }
         audioSource.Play();
     }
