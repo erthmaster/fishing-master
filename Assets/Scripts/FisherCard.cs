@@ -73,7 +73,7 @@ public class FisherCard : MonoBehaviour
 
 	public void UpdateView()
 	{
-		fisherName.text = $"Fisher #{id + 1} (Level: {fisher.level})";
+		fisherName.text = $"Fisher #{id + 1} (Level: {fisher.level + 1})";
 		wormsTank.text = $"Worms tank: {fisher.MaxWormsAmount}";
 		rod.text = $"Fishing rod: {fisher.FPS} FPS";
 

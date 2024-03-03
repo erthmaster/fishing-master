@@ -1680,7 +1680,7 @@ MonoBehaviour:
   minimumDeepSleepTime: 15
   wakeUpChance: 0.15
   levelUpTimes: 0f0000001e00000032000000
-  level: 1
+  level: 0
   wormsTankLevel: 0
   fishingRodLevel: 0
   hasUmbrella: 0

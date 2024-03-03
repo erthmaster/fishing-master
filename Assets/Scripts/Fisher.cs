@@ -179,12 +179,12 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
     private void TryLevelUp()
     {
-        if (level >= levelUpTimes.Length)
+        if (level + 1 >= levelUpTimes.Length)
             return;
 
         levelUpTime++;
 
-        if (levelUpTime >= levelUpTimes[level - 1])
+        if (levelUpTime >= levelUpTimes[level])
         {
             level++;
             levelUpTime = 0;
