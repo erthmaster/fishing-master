@@ -15,7 +15,7 @@ public class WormsBucket : MonoBehaviour, IInteractable
 
 	public void UpdateView()
 	{
-		wormsAmount.text = $"{fisher.WormsAmount}/{fisher.maxWormsAmount}";
+		wormsAmount.text = $"{fisher.WormsAmount}/{fisher.MaxWormsAmount}";
 		var hasWorms = fisher.WormsAmount > 0;
 		wormsAmount.color = hasWorms ? NormalTextColor : Color.red;
 		renderer.sprite = hasWorms ? withWorms : withoutWorms;

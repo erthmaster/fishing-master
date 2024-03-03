@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum FisherState
@@ -15,15 +16,31 @@ public enum FisherState
     Hiding
 }
 
+[Serializable]
+public struct FishingRodUpgrade
+{
+    public int price;
+    [FormerlySerializedAs("dps")] public int fps;
+}
+
+[Serializable]
+public struct WormsTankUpgrade
+{
+    public int price;
+    public int amount;
+}
+
 public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 {
     private static readonly int AnimatorState = Animator.StringToHash("State");
     
-    public UnityEvent LevelChanged;
+    public UnityEvent ViewUpdated;
 
     public RuntimeAnimatorController[] animations;
     public int[] fishPerLevel;
-    public int[] fishPerRodLevel;
+    public FishingRodUpgrade[] rodsUpgrades;
+    public WormsTankUpgrade[] wormsTankUpgrades;
+    public int umbrellaPrice;
     public float[] sleepingChancePerLevel;
     public float chanceToConsumeWorm;
     public int hardSleepinessThreshold;
@@ -41,11 +58,10 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
             wormsBucket.UpdateView();
         }
     }
-    [Space]
-    public int maxWormsAmount;
 
     [Space]
     public int level;
+    public int wormsTankLevel;
     public int fishingRodLevel;
     public bool hasUmbrella;
 
@@ -68,7 +84,8 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public TextMeshProUGUI interactText;
     public SpriteRenderer renderer;
 
-    public int FPS => fishPerLevel[level] + fishPerRodLevel[fishingRodLevel];
+    public int FPS => fishPerLevel[level] + rodsUpgrades[fishingRodLevel].fps;
+    public int MaxWormsAmount => wormsTankUpgrades[wormsTankLevel].amount;
     public float ChanceToSleep => sleepingChancePerLevel[level];
 
     [Header("UI")] 
@@ -177,7 +194,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         {
             level++;
             levelUpTime = 0;
-            LevelChanged.Invoke();
+            UpdateView();
         }
     }
 
@@ -261,7 +278,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
     public void GiveWorms()
     {
-        WormsAmount += Player.Instance.GetWorms(maxWormsAmount - WormsAmount);
+        WormsAmount += Player.Instance.GetWorms(MaxWormsAmount - WormsAmount);
     }
 
     public void UpdateView()
@@ -298,6 +315,8 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 status.text = "Hiding...";
                 break;
         }
+        
+        ViewUpdated.Invoke();
     }
 
     public void BecomeInteractTarget()

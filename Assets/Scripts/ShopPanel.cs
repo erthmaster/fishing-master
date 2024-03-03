@@ -10,7 +10,7 @@ public class ShopPanel : MonoBehaviour
 {
 	public FisherCard prefab;
 	public Transform container;
-	public Button buyNewFisherButton;
+	public PriceButton buyNewFisherButton;
 	
 	public FisherShopCamera shopCamera;
 	public FisherCard selected;
@@ -113,7 +113,11 @@ public class ShopPanel : MonoBehaviour
 
 		if (_cards.Count == Fishers.Instance.FishersList.Count)
 		{
-			buyNewFisherButton.Interactable = false;
+			buyNewFisherButton.SoldOut();
+		}
+		else
+		{
+			buyNewFisherButton.UpdatePrice();
 		}
 	}
 
