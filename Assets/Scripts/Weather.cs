@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AurumGames.Animation;
 using AurumGames.Animation.Tracks;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -33,10 +34,11 @@ public class Weather : MonoBehaviour, IUpdatable
     [SerializeField] private GameObject rainyParticles;
     [SerializeField] private GameObject stormyParticles;
     [SerializeField] private GameObject sunnyParticles;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip stormyClip;
-    [SerializeField] private AudioClip sunnyClip;
-    [SerializeField] private AudioClip rainyClip;
+    [SerializeField] private AudioSource thunderAudioSource;
+    
+    [SerializeField] private AudioMixerSnapshot stormyClip;
+    [SerializeField] private AudioMixerSnapshot sunnyClip;
+    [SerializeField] private AudioMixerSnapshot rainyClip;
     
     [SerializeField] private float ticksToWeatherChange;
 
@@ -77,8 +79,6 @@ public class Weather : MonoBehaviour, IUpdatable
         state = WeatherState.Sunny;
         sunnyParticles.SetActive(state == WeatherState.Sunny);
         ticksToWeatherChange = Random.Range(MinTicks, MaxTicks);
-        audioSource.clip = sunnyClip;
-        audioSource.Play();
     }
 
     public void GameUpdate()
@@ -99,6 +99,7 @@ public class Weather : MonoBehaviour, IUpdatable
         if (state == WeatherState.Stormy && Random.value < ligtingChance)
         {
             _lighting.Play();
+            thunderAudioSource.Play();
         }
     }
 
@@ -126,19 +127,18 @@ public class Weather : MonoBehaviour, IUpdatable
         
         if (state == WeatherState.Stormy)
         {
-            audioSource.clip = stormyClip;
+            stormyClip.TransitionTo(1);
             _cameraColor.SetState(stormyColor);
         }
         else if (state == WeatherState.Rainy)
         {
-            audioSource.clip = rainyClip;
+            rainyClip.TransitionTo(1);
             _cameraColor.SetState(rainyColor);
         }
         else if(state == WeatherState.Sunny)
         {
-            audioSource.clip = sunnyClip;
+            sunnyClip.TransitionTo(1);
             _cameraColor.SetState(sunnyColor);
         }
-        audioSource.Play();
     }
 }
