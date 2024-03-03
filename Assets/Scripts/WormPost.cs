@@ -29,12 +29,13 @@ public class WormPost : MonoBehaviour, IUpdatable
 		nextBox--;
 		if (nextBox <= 0)
 		{
-			Vector2 randomCircle = Random.insideUnitCircle * GetComponent<CircleCollider2D>().radius;
+			var circleCollider2D = GetComponent<CircleCollider2D>();
+			Vector2 randomCircle = Random.insideUnitCircle * circleCollider2D.radius + circleCollider2D.offset;
 			Vector3 spawnPosition = new Vector3(randomCircle.x, randomCircle.y, 0) + transform.position;
 			
 			GameObject wormBox = Instantiate(box, spawnPosition, Quaternion.identity);
-			wormBox.GetComponent<WormBox>().amount = Random.Range(5, 15);
-			nextBox = Random.Range(3, 10);
+			wormBox.GetComponent<WormBox>().amount = Random.Range(5, 30);
+			nextBox = Random.Range(5, 20);
 		}
 	}
 }
