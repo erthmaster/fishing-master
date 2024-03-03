@@ -132,6 +132,10 @@ public class Player : MonoBehaviour
         {
             AddTarget(interactable);
         }
+        if (other.TryGetComponent(out WormBox wormBox))
+        {
+            wormBox.Interact();
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
