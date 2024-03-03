@@ -13,20 +13,44 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float moveSpeed = 3;
 
-    private int WormsAmount
+    public int WormsAmount
     {
-        get => wormsAmount;
+        get => wormsAmount.WormsAmount;
+        set => wormsAmount.WormsAmount = value;
+    }
+
+    public int FishAmount
+    {
+        get => fishAmount;
         set
         {
-            wormsAmount = value;
-            wormsAmountText.text = $"Worms: {wormsAmount} / {maxWormsAmount}";
+            fishAmount = value;
+
+            if (fishAmountText)
+            {
+                fishAmountText.text = fishAmount.ToString();
+            }
         }
     }
-    [SerializeField] private int maxWormsAmount = 20;
+    
+    public int FishPerSecond
+    {
+        set
+        {
+            if (fishPerSecondText)
+            {
+                fishPerSecondText.text = value.ToString();
+            }
+        }
+    }
 
+    [SerializeField] private int fishAmount;
+    
     [Header("UI")] 
-    [SerializeField] private TextMeshProUGUI wormsAmountText;
-    [SerializeField] private int wormsAmount;
+    [SerializeField] private Worms wormsAmount;
+    [SerializeField] private TextMeshProUGUI fishAmountText;
+    [SerializeField] private TextMeshProUGUI fishPerSecondText;
+    
 
     public IInteractable Target => _targets.LastOrDefault();
 
@@ -39,7 +63,7 @@ public class Player : MonoBehaviour
     {
         Instance ??= this;
 
-        WormsAmount = wormsAmount;
+        FishAmount = fishAmount;
     }
 
     private void Start()
@@ -62,9 +86,6 @@ public class Player : MonoBehaviour
     public void CollectWorms(int amount)
     {
         WormsAmount += amount;
-
-        if (WormsAmount > maxWormsAmount)
-            WormsAmount = maxWormsAmount;
     }
 
     private void Update()

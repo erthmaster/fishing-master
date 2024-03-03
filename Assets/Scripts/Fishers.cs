@@ -18,5 +18,12 @@ public class Fishers : MonoBehaviour
 			Fisher fisher = FishersList[i];
 			fisher.fisherName.text = $"Fisher #{i + 1}";
 		}
+		
+		InvokeRepeating(nameof(UpdateFPS), 1, 0.5f);
+	}
+
+	public void UpdateFPS()
+	{
+		Player.Instance.FishPerSecond = FishersList.Where(fisher => fisher.gameObject.activeInHierarchy && fisher.state == FisherState.Working).Sum(fisher => fisher.FPS);
 	}
 }

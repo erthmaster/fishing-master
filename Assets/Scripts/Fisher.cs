@@ -83,6 +83,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public TextMeshProUGUI status;
     public TextMeshProUGUI interactText;
     public SpriteRenderer renderer;
+    public bool ready;
 
     public int FPS => fishPerLevel[level] + rodsUpgrades[fishingRodLevel].fps;
     public int MaxWormsAmount => wormsTankUpgrades[wormsTankLevel].amount;
@@ -109,7 +110,9 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
     public void GameTick()
     {
-        Debug.Log("Tick");
+        if (ready == false)
+            return;
+        
         CheckWeather();
         
         switch (state)
@@ -117,7 +120,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
             case FisherState.Working:
                 if (WormsAmount > 0)
                 {
-                    Debug.Log($"Working: " + FPS);
+                    Player.Instance.FishAmount += FPS;
                     TryConsumeWorm();
                     TryLevelUp();
                 }
@@ -132,13 +135,11 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 break;
             
             case FisherState.DeepSleeping:
-                Debug.Log("Deep sleeping");
                 deepSleepingTime++;
                 TryWakeUp();
                 return;
             
             case FisherState.WaitingForWorms:
-                Debug.Log("Waiting for worms");
                 if (WormsAmount > 0)
                 {
                     SetState(FisherState.Working);
@@ -170,14 +171,9 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         
         if (Random.value < wakeUpChance)
         {
-            Debug.Log("Woke up");
             SetNormalState();
             sleepiness = 0;
             deepSleepingTime = 0;
-        }
-        else
-        {
-            Debug.Log("Failed to wake up");
         }
     }
 
@@ -249,7 +245,6 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         if (Random.value < chanceToConsumeWorm)
         {
             WormsAmount--;
-            Debug.Log("Consumed worm");
         }
     }
 

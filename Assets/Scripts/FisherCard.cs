@@ -56,7 +56,8 @@ public class FisherCard : MonoBehaviour
 		id = fisherId;
 
 		fisherImageGrabber.fisher = target;
-		
+
+		target.ready = true;
 		target.ViewUpdated.AddListener(UpdateView);
 		target.gameObject.SetActive(true);
 		UpdateView();

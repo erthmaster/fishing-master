@@ -1285,7 +1285,7 @@ MonoBehaviour:
   animations:
   - {fileID: 9100000, guid: e1b8e967d311dcc429bfaeb3468b4104, type: 2}
   - {fileID: 9100000, guid: 7da1022a19921c3469ff018d97cefaf8, type: 2}
-  fishPerLevel: 010000000300000007000000
+  fishPerLevel: 01000000050000000a000000
   rodsUpgrades:
   - price: 0
     fps: 1
@@ -1304,15 +1304,15 @@ MonoBehaviour:
     amount: 40
   umbrellaPrice: 35
   sleepingChancePerLevel:
-  - 0.3
-  - 0.55
+  - 0.14
+  - 0.35
   - 0.67
-  chanceToConsumeWorm: 0.75
-  hardSleepinessThreshold: 13
-  sleepinessThreshold: 6
+  chanceToConsumeWorm: 0.44
+  hardSleepinessThreshold: 20
+  sleepinessThreshold: 15
   minimumDeepSleepTime: 15
   wakeUpChance: 0.15
-  levelUpTimes: 0f000000190000001e000000
+  levelUpTimes: 0f0000001e00000032000000
   level: 1
   wormsTankLevel: 0
   fishingRodLevel: 0
@@ -1331,6 +1331,7 @@ MonoBehaviour:
   status: {fileID: 2866822853569047451}
   interactText: {fileID: 6136050993331461204}
   renderer: {fileID: 142556157576608660}
+  ready: 0
   wormsAmount: 10
 --- !u!1001 &2902007146325778843
 PrefabInstance:

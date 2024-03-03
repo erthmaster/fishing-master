@@ -40,7 +40,7 @@ public class Currency : MonoBehaviour
 		
 		_track = new FluentFloatTrack(_money, value =>
 		{
-			text.text = value.ToString("F0");
+			text.text = value.ToString("F0") + " <sprite=0>";
 		}, new Transition(300, Easing.QuadOut));
 
 		_animation = new FluentAnimationPlayer(this, _track);
