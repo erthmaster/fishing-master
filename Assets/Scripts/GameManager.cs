@@ -9,9 +9,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public bool isPlaying;
 
-    [Header("UI")] 
-    [SerializeField] private GameObject pausePanel;
-
     private void Awake()
     {
         Instance ??= this;
@@ -19,13 +16,23 @@ public class GameManager : MonoBehaviour
     
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
+            TogglePause();
+        
+        if (isPlaying == false && Input.GetKeyDown(KeyCode.Space))
             TogglePause();
     }
 
     private void TogglePause()
     {
         isPlaying = !isPlaying;
-        pausePanel.SetActive(!isPlaying);
+        if (isPlaying)
+        {
+            PausePanel.Instance.Hide();
+        }
+        else
+        {
+            PausePanel.Instance.Show();
+        }
     }
 }

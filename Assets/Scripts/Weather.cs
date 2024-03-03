@@ -127,17 +127,17 @@ public class Weather : MonoBehaviour, IUpdatable
         
         if (state == WeatherState.Stormy)
         {
-            stormyClip.TransitionTo(1);
+            PausePanel.Instance.Play(stormyClip);
             _cameraColor.SetState(stormyColor);
         }
         else if (state == WeatherState.Rainy)
         {
-            rainyClip.TransitionTo(1);
+            PausePanel.Instance.Play(rainyClip);
             _cameraColor.SetState(rainyColor);
         }
         else if(state == WeatherState.Sunny)
         {
-            sunnyClip.TransitionTo(1);
+            PausePanel.Instance.Play(sunnyClip);
             _cameraColor.SetState(sunnyColor);
         }
     }

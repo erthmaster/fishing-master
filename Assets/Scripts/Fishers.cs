@@ -19,7 +19,7 @@ public class Fishers : MonoBehaviour
 			fisher.fisherName.text = $"Fisher #{i + 1}";
 		}
 		
-		InvokeRepeating(nameof(UpdateFPS), 1, 0.5f);
+		InvokeRepeating(nameof(UpdateFPS), 0, 0.5f);
 	}
 
 	public void UpdateFPS()

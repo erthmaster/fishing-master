@@ -22,15 +22,26 @@ public class ShopPanel : MonoBehaviour
 	{
 		var canvasGroup = GetComponent<CanvasGroup>();
 		var rectTransform = transform as RectTransform;
+		Vector2 position = rectTransform!.anchoredPosition;
 		
 		var show = new TracksEvaluator(new ITrack[]
 		{
-			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames01(new TransitionStruct(300, Easing.QuadOut)))
+			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames01(new TransitionStruct(300, Easing.QuadOut))),
+			new AnchoredPositionTrack(rectTransform, new []
+			{
+				new KeyFrame<Vector2>(0, position - new Vector2(rectTransform.rect.width, 0), Easing.QuintOut),
+				new KeyFrame<Vector2>(300, position, Easing.QuadOut),
+			}),
 		});
 
 		var hide = new TracksEvaluator(new ITrack[]
 		{
-			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames10(new TransitionStruct(300, Easing.QuadOut)))
+			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames10(new TransitionStruct(300, Easing.QuintOut))),
+			new AnchoredPositionTrack(rectTransform, new []
+			{
+				new KeyFrame<Vector2>(0, position, Easing.QuadOut),
+				new KeyFrame<Vector2>(300, position - new Vector2(rectTransform.rect.width, 0), Easing.QuadOut),
+			}),
 		});
 
 		_window = new StatedAnimationPlayer<Visibility>(this, new Dictionary<Visibility, TracksEvaluator>()
@@ -74,7 +85,12 @@ public class ShopPanel : MonoBehaviour
 		
 		_window.SetStateInstant(Visibility.Hidden);
 	}
-	
+
+	public void Start()
+	{
+		CreateNewFisher();
+	}
+
 	public void Interact()
 	{
 		if (_window.IsPlaying && _window.Percent is <= 0.85f and >= 0.25f)

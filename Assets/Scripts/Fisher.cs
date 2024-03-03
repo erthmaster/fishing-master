@@ -132,7 +132,6 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 break;
             
             case FisherState.Sleeping:
-                Debug.Log("Sleeping");
                 break;
             
             case FisherState.DeepSleeping:
@@ -266,6 +265,9 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 break;
             
             case FisherState.Sleeping:
+                SetNormalState();
+                sleepiness = 0;
+                deepSleepingTime = 0;
                 break;
         }
     }
