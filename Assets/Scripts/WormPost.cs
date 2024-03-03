@@ -34,8 +34,8 @@ public class WormPost : MonoBehaviour, IUpdatable
 			Vector3 spawnPosition = new Vector3(randomCircle.x, randomCircle.y, 0) + transform.position;
 			
 			GameObject wormBox = Instantiate(box, spawnPosition, Quaternion.identity);
-			wormBox.GetComponent<WormBox>().amount = Random.Range(5, 30);
-			nextBox = Random.Range(5, 20);
+			wormBox.GetComponent<WormBox>().amount = Random.Range(5, 20);
+			nextBox = Random.Range(10, 30);
 		}
 	}
 }
