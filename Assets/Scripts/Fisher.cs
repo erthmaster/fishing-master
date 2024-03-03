@@ -17,8 +17,11 @@ public enum FisherState
 
 public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 {
-    public UnityEvent LevelChanged;
+    private static readonly int AnimatorState = Animator.StringToHash("State");
     
+    public UnityEvent LevelChanged;
+
+    public RuntimeAnimatorController[] animations;
     public int[] fishPerLevel;
     public int[] fishPerRodLevel;
     public float[] sleepingChancePerLevel;
@@ -35,7 +38,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         set
         {
             wormsAmount = value;
-            wormsText.text = $"Worms:\n{wormsAmount} / {maxWormsAmount}";
+            wormsBucket.UpdateView();
         }
     }
     [Space]
@@ -44,7 +47,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     [Space]
     public int level;
     public int fishingRodLevel;
-    public bool umbrella;
+    public bool hasUmbrella;
 
     [Space]
     public int sleepiness;
@@ -52,21 +55,35 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public int levelUpTime;
 
     public FisherState state;
+    
+    [Space]
+    public Animator animator;
+    public FishingRod fishingRod;
+    public GameObject umbrella;
+    public GameObject fisher;
+    public WormsBucket wormsBucket;
+    public InfoPanel infoPanel;
+    public TextMeshProUGUI fisherName;
+    public TextMeshProUGUI status;
+    public TextMeshProUGUI interactText;
 
     public int FPS => fishPerLevel[level] + fishPerRodLevel[fishingRodLevel];
     public float ChanceToSleep => sleepingChancePerLevel[level];
 
     [Header("UI")] 
-    [SerializeField] private TextMeshPro wormsText;
     [SerializeField] private int wormsAmount;
 
     private void Start()
     {
         Updater.Instance.Add(this);
         Fishers.Instance.Add(this);
+        fisherName.text = $"Fisher #{Fishers.Instance.FishersList.Count}";
+
+        animator.runtimeAnimatorController = animations[Random.Range(0, animations.Length)];
 
         WormsAmount = wormsAmount;
         gameObject.SetActive(false);
+        UpdateView();
     }
 
     public void GameUpdate()
@@ -77,6 +94,8 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     public void GameTick()
     {
         Debug.Log("Tick");
+        CheckWeather();
+        
         switch (state)
         {
             case FisherState.Working:
@@ -88,7 +107,7 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 }
                 else
                 {
-                    state = FisherState.WaitingForWorms;
+                    SetState(FisherState.WaitingForWorms);
                 }
                 break;
             
@@ -106,11 +125,12 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
                 Debug.Log("Waiting for worms");
                 if (WormsAmount > 0)
                 {
-                    state = FisherState.Working;
+                    SetState(FisherState.Working);
                 }
                 break;
             
             case FisherState.Hiding:
+                SetNormalState();
                 return;
         }
         
@@ -118,12 +138,12 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
 
         if (sleepiness > hardSleepinessThreshold)
         {
-            state = FisherState.DeepSleeping;
+            SetState(FisherState.DeepSleeping);
             deepSleepingTime = 0;
         }
         else if (sleepiness > sleepinessThreshold)
         {
-            state = FisherState.Sleeping;
+            SetState(FisherState.Sleeping);
         }
     }
 
@@ -160,9 +180,46 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         }
     }
 
+    private void CheckWeather()
+    {
+        var weather = Weather.Instance;
+
+        switch (weather.state)
+        {
+            case WeatherState.Stormy:
+                SetState(FisherState.Hiding);
+                break;
+            
+            case WeatherState.Rainy:
+                SetState(FisherState.Hiding);
+                break;
+        }
+    }
+
     private void SetNormalState()
     {
-        state = FisherState.Working;
+        var weather = Weather.Instance;
+
+        switch (weather.state)
+        {
+            case WeatherState.Stormy:
+                if (state != FisherState.Hiding)
+                    SetState(FisherState.Hiding);
+                break;
+            
+            case WeatherState.Rainy when hasUmbrella:
+                SetState(FisherState.Working);
+                break;
+            
+            case WeatherState.Rainy:
+                if (state != FisherState.Hiding)
+                    SetState(FisherState.Hiding);
+                break;
+            
+            default:
+                SetState(FisherState.Working);
+                break;
+        }
     }
 
     private void IncreaseSleepiness()
@@ -180,28 +237,75 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
         }
     }
 
-    public void Show()
+    public void SetState(FisherState newState)
     {
-        wormsText.gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        wormsText.gameObject.SetActive(false);
+        state = newState;
+        animator.SetInteger(AnimatorState, (int)state);
+        UpdateView();
     }
 
     public void Interact()
     {
+        switch (state)
+        {
+            case FisherState.Working:
+            case FisherState.WaitingForWorms:
+                GiveWorms();
+                break;
+            
+            case FisherState.Sleeping:
+                break;
+        }
+    }
+
+    public void GiveWorms()
+    {
         WormsAmount += Player.Instance.GetWorms(maxWormsAmount - WormsAmount);
+    }
+
+    public void UpdateView()
+    {
+        if (state is FisherState.Working or FisherState.Sleeping)
+        {
+            fishingRod.Show(fishingRodLevel);
+        }
+        else
+        {
+            fishingRod.Hide();
+        }
+
+        umbrella.SetActive(hasUmbrella);
+        fisher.SetActive(state is not FisherState.Hiding);
+        wormsBucket.UpdateView();
+
+        switch (state)
+        {
+            case FisherState.Working:
+                status.text = "Working...";
+                break;
+            
+            case FisherState.Sleeping:
+            case FisherState.DeepSleeping:
+                status.text = "Sleeping...";
+                break;
+            
+            case FisherState.WaitingForWorms:
+                status.text = "Waiting worms...";
+                break;
+            
+            case FisherState.Hiding:
+                status.text = "Hiding...";
+                break;
+        }
     }
 
     public void BecomeInteractTarget()
     {
-        Show();
+        infoPanel.BecomeInteractTarget(this);
     }
 
     public void StopBeingInteractTarget()
     {
-        Hide();
+        infoPanel.StopBeingInteractTarget();
     }
 }

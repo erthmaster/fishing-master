@@ -14,17 +14,23 @@ public enum WeatherState
 
 public class Weather : MonoBehaviour, IUpdatable
 {
+    public static Weather Instance;
+    
     public WeatherState state { get; private set; }
 
-    private const int MinTicks = 20;
-    private const int MaxTicks = 40;
+    public int MinTicks = 20;
+    public int MaxTicks = 40;
 
     [SerializeField] private GameObject rainyParticles;
     [SerializeField] private GameObject stormyParticles;
     [SerializeField] private GameObject sunnyParticles;
     
     [SerializeField] private float ticksToWeatherChange;
-    
+
+    private void Awake()
+    {
+        Instance ??= this;
+    }
 
     private void Start()
     {

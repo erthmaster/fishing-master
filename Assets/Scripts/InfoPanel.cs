@@ -7,43 +7,29 @@ using UnityEngine;
 [RequireComponent(typeof(CanvasGroup))]
 public class InfoPanel : MonoBehaviour
 {
-	public Transform target;
-	
-	private StatedAnimationPlayer<Visibility> _animation;
+	public GameObject interactKey;
+	private StatedFluentAnimationPlayer<Visibility> _animation;
 	
 	private void Awake()
 	{
 		var canvasGroup = GetComponent<CanvasGroup>();
-
-		Vector3 localPosition = target.localPosition;
-		var show = new TracksEvaluator(new ITrack[]
-		{
-			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames01(new TransitionStruct(300, Easing.QuadOut))),
-			new LocalPositionTrack(target, new TransitionStruct(300, Easing.QuintOut).GetKeyFrames(localPosition - new Vector3(0, 1f), localPosition))
-		});
-
-		var hide = new TracksEvaluator(new ITrack[]
-		{
-			new CanvasGroupOpacityTrack(canvasGroup, FloatTrack.KeyFrames10(new TransitionStruct(300, Easing.QuadOut))),
-			new LocalPositionTrack(target, new TransitionStruct(300, Easing.QuintOut).GetKeyFrames(localPosition, localPosition - new Vector3(0, 1f)))
-		});
-
-		_animation = new StatedAnimationPlayer<Visibility>(this, new Dictionary<Visibility, TracksEvaluator>()
-		{
-			{ Visibility.Visible, show },
-			{ Visibility.Hidden, hide }
-		});
+		_animation = canvasGroup.Fade(this);
 		
 		_animation.SetStateInstant(Visibility.Hidden);
 	}
 
-	public void BecomeInteractTarget()
+	public void BecomeInteractTarget(IInteractable interactable)
 	{
-		_animation.SetState(Visibility.Visible);
+		interactKey.SetActive(Player.Instance.Target == interactable);
+			
+		
+		if (_animation?.CurrentState == Visibility.Hidden)
+			_animation.SetState(Visibility.Visible);
 	}
 
 	public void StopBeingInteractTarget()
 	{
-		_animation.SetState(Visibility.Hidden);
+		if (_animation?.CurrentState == Visibility.Visible)
+			_animation.SetState(Visibility.Hidden);
 	}
 }
