@@ -786,7 +786,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6396779625423842048}
   - component: {fileID: 5628856697709396524}
-  - component: {fileID: 1637873003195056956}
   - component: {fileID: 5443698055066250855}
   - component: {fileID: 1170335884748109777}
   m_Layer: 0
@@ -864,32 +863,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!61 &1637873003195056956
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4940096170648464829}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.2}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.06, y: 0.05}
-  m_EdgeRadius: 0.13
 --- !u!61 &5443698055066250855
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1335,8 +1308,8 @@ MonoBehaviour:
   - 0.55
   - 0.67
   chanceToConsumeWorm: 0.75
-  hardSleepinessThreshold: 7
-  sleepinessThreshold: 4
+  hardSleepinessThreshold: 13
+  sleepinessThreshold: 6
   minimumDeepSleepTime: 15
   wakeUpChance: 0.15
   levelUpTimes: 0f000000190000001e000000

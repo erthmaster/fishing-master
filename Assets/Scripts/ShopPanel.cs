@@ -111,7 +111,7 @@ public class ShopPanel : MonoBehaviour
 	{
 		CreateNewFisher();
 
-		if (_cards.Count == Fishers.Instance.FishersList.Count)
+		if (_cards.Count == Fishers.Instance.FishersList.Length)
 		{
 			buyNewFisherButton.SoldOut();
 		}

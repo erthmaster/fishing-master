@@ -94,8 +94,6 @@ public class Fisher : MonoBehaviour, IInteractable, IUpdatable
     private void Start()
     {
         Updater.Instance.Add(this);
-        Fishers.Instance.Add(this);
-        fisherName.text = $"Fisher #{Fishers.Instance.FishersList.Count}";
 
         animator.runtimeAnimatorController = animations[Random.Range(0, animations.Length)];
 
